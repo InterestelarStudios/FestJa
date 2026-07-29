@@ -1,0 +1,5 @@
+package com.insterestelar.ifest
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
