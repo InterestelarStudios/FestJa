@@ -1,4 +1,4 @@
-package com.insterestelar.ifestBusiness
+package com.insterestelar.festja_business
 
 import io.flutter.embedding.android.FlutterActivity
 

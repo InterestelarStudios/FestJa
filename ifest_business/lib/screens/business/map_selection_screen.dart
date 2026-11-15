@@ -224,7 +224,7 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Selecionar Localização'),
-        backgroundColor: AppTheme.backgroundLight,
+        backgroundColor: context.backgroundColor,
       ),
       body: Stack(
         children: [
@@ -250,7 +250,7 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: context.surfaceColor,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
@@ -282,9 +282,9 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : IconButton(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.search,
-                                color: AppTheme.primaryDark,
+                                color: context.primaryColor,
                               ),
                               onPressed: _searchAddress,
                             ),
@@ -296,7 +296,7 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
                     margin: const EdgeInsets.only(top: 8),
                     constraints: const BoxConstraints(maxHeight: 250),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: context.surfaceColor,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
@@ -314,7 +314,7 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
                       itemBuilder: (context, index) {
                         final prediction = _predictions[index];
                         return ListTile(
-                          leading: const Icon(Icons.location_on, color: AppTheme.primaryDark),
+                          leading: Icon(Icons.location_on, color: context.primaryColor),
                           title: Text(prediction['description'], style: const TextStyle(fontSize: 14)),
                           onTap: () {
                             _searchController.text = prediction['description'];
@@ -338,8 +338,8 @@ class _MapSelectionScreenState extends State<MapSelectionScreen> {
               child: ElevatedButton(
                 onPressed: _confirmSelection,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryDark,
-                  foregroundColor: Colors.white,
+                  backgroundColor: context.primaryColor,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   elevation: 4,
                   shape: RoundedRectangleBorder(

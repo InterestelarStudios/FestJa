@@ -39,18 +39,76 @@ class _BusinessRegistrationScreenState
     'Prestador de Serviço',
     'Local/Espaço',
     'Fornecedor de Produtos',
+    'Músico e Grupos Musicais',
   ];
-  final List<String> _categoryOptions = [
-    'Organização e Planejamento',
-    'Espaços e Ambientes',
-    'Alimentos e Bebidas',
-    'Doces e Confeitaria',
-    'Decoração e Cenografia',
-    'Música e Atrações',
-    'Fotografia e Vídeo',
-    'Estrutura e Equipamentos',
-    'Vestuário e Beleza',
-  ];
+  List<String> _getCategoryOptions(String type) {
+    if (type == 'Local/Espaço') {
+      return [
+        'Salão de Festas Clássico',
+        'Sítios, Chácaras e Fazendas',
+        'Espaços ao Ar Livre',
+        'Restaurantes e Bistrôs',
+        'Rooftops e Terraços',
+        'Hotéis, Pousadas e Resorts',
+        'Casas de Shows e Arenas',
+        'Clubes Sociais e Esportivos',
+        'Mansões e Residências',
+        'Espaços Minimalistas / Galpões',
+      ];
+    } else if (type == 'Fornecedor de Produtos') {
+      return [
+        'Buffet Completo',
+        'Buffet de Finger Foods',
+        'Bebidas Finitas (Consignado)',
+        'Cervejas Artesanais e Chopp',
+        'Doces Finos e Gourmet',
+        'Bolo Artístico (Wedding Cake)',
+        'Lembrancinhas Personalizadas',
+        'Convites e Papelaria Fina',
+        'Som e Pistas de Dança',
+        'Iluminação Cênica e Laser',
+        'Mobiliário para Eventos',
+        'Painéis de LED e Projeção',
+        'Louças e Utensílios de Mesa',
+        'Geradores de Energia',
+        'Brinquedos e Infláveis',
+        'Efeitos Especiais (Sparkles/Fumaça)',
+      ];
+    } else if (type == 'Músico e Grupos Musicais') {
+      return [
+        'DJ para Festas e Baladas',
+        'Banda de Casamento / Baile',
+        'Grupo Musical de Cerimônia',
+        'Artista Solo / Cantor',
+        'Duplas Sertanejas / Acústicas',
+        'Grupo de Pagode / Samba',
+        'Banda de Rock / Pop',
+        'Orquestras e Big Bands',
+        'Coral e Madrigais',
+        'Grupo de Jazz, Blues e Bossa Nova',
+        'Instrumentistas (Violinista, Saxofonista, etc.)',
+      ];
+    } else {
+      return [
+        'Organização e Cerimonial',
+        'Fotografia',
+        'Filmagem e Videomaker',
+        'Decoração e Cenografia',
+        'Design Floral',
+        'Recepção e Assessoria',
+        'Segurança e Portaria',
+        'Limpeza e Apoio',
+        'Equipe de Bar e Bartenders',
+        'Garçons e Copeiros',
+        'Recreação Infantil',
+        'Animação e Personagens',
+        'Maquiagem e Cabelo (Beauty)',
+        'Alfaiataria e Vestidos',
+        'Coreógrafos e Dançarinos',
+        'Valet e Estacionamento',
+      ];
+    }
+  }
 
   // Step 2
   final TextEditingController _regionController = TextEditingController();
@@ -156,7 +214,12 @@ class _BusinessRegistrationScreenState
   }
 
   Future<void> _pickLogo() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+      maxWidth: 800,
+      maxHeight: 800,
+    );
     if (image != null) {
       setState(() {
         _logoImage = File(image.path);
@@ -205,7 +268,7 @@ class _BusinessRegistrationScreenState
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Sua empresa foi cadastrada com sucesso no iFest!'),
+            content: Text("Sua empresa foi cadastrada com sucesso no Fest'Ja!"),
           ),
         );
         Navigator.pop(context);
@@ -237,7 +300,7 @@ class _BusinessRegistrationScreenState
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastrar Empresa'),
-        backgroundColor: AppTheme.backgroundLight,
+        backgroundColor: context.backgroundColor,
       ),
       body: Column(
         children: [
@@ -245,8 +308,8 @@ class _BusinessRegistrationScreenState
           LinearProgressIndicator(
             value: (_currentPage + 1) / 3,
             backgroundColor: Colors.grey[200],
-            valueColor: const AlwaysStoppedAnimation<Color>(
-              AppTheme.secondaryPurple,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              context.secondaryColor,
             ),
           ),
           Expanded(
@@ -287,7 +350,10 @@ class _BusinessRegistrationScreenState
               items: _typeOptions
                   .map((t) => DropdownMenuItem(value: t, child: Text(t)))
                   .toList(),
-              onChanged: (val) => setState(() => _type = val!),
+              onChanged: (val) => setState(() {
+                _type = val!;
+                _selectedCategories.clear();
+              }),
             ),
             const SizedBox(height: 16),
             Text(
@@ -307,13 +373,13 @@ class _BusinessRegistrationScreenState
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: _categoryOptions.map((c) {
+                      children: _getCategoryOptions(_type).map((c) {
                         final isSelected = _selectedCategories.contains(c);
                         return FilterChip(
                           label: Text(c, style: const TextStyle(fontSize: 12)),
                           selected: isSelected,
-                          selectedColor: AppTheme.secondaryPurple.withValues(alpha: 0.2),
-                          checkmarkColor: AppTheme.secondaryPurple,
+                          selectedColor: context.secondaryColor.withValues(alpha: 0.2),
+                          checkmarkColor: context.secondaryColor,
                           onSelected: (selected) {
                             setState(() {
                               if (selected) {
@@ -351,8 +417,8 @@ class _BusinessRegistrationScreenState
             ElevatedButton(
               onPressed: () => _nextPage(_formKey1),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryDark,
-                foregroundColor: Colors.white,
+                backgroundColor: context.primaryColor,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 minimumSize: const Size(double.infinity, 56),
               ),
               child: const Text('Próximo'),
@@ -406,10 +472,10 @@ class _BusinessRegistrationScreenState
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.primaryDark.withValues(alpha: 0.05),
+                color: context.primaryColor.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: AppTheme.primaryDark.withValues(alpha: 0.1),
+                  color: context.primaryColor.withValues(alpha: 0.1),
                 ),
               ),
               child: Column(
@@ -448,8 +514,8 @@ class _BusinessRegistrationScreenState
                           icon: const Icon(Icons.map_outlined, size: 20),
                           label: const Text('Abrir Mapa', style: TextStyle(fontSize: 13)),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.primaryDark,
-                            foregroundColor: Colors.white,
+                            backgroundColor: context.primaryColor,
+                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
                       ),
@@ -479,8 +545,8 @@ class _BusinessRegistrationScreenState
                   child: ElevatedButton(
                     onPressed: () => _nextPage(_formKey2),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.primaryDark,
-                      foregroundColor: Colors.white,
+                      backgroundColor: context.primaryColor,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       minimumSize: const Size(double.infinity, 56),
                     ),
                     child: const Text('Próximo'),
@@ -521,10 +587,10 @@ class _BusinessRegistrationScreenState
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: AppTheme.primaryDark.withValues(alpha: 0.1),
+                    color: context.secondaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: AppTheme.primaryDark.withValues(alpha: 0.2),
+                      color: context.secondaryColor.withValues(alpha: 0.2),
                     ),
                     image: _logoImage != null
                         ? DecorationImage(
@@ -534,12 +600,12 @@ class _BusinessRegistrationScreenState
                         : null,
                   ),
                   child: _logoImage == null
-                      ? const Column(
+                      ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add_a_photo, color: AppTheme.primaryDark),
-                            SizedBox(height: 4),
-                            Text('Logo', style: TextStyle(fontSize: 12, color: AppTheme.primaryDark)),
+                            Icon(Icons.add_a_photo, color: context.secondaryColor),
+                            const SizedBox(height: 4),
+                            Text('Logo', style: TextStyle(fontSize: 12, color: context.secondaryColor)),
                           ],
                         )
                       : null,
@@ -626,8 +692,8 @@ class _BusinessRegistrationScreenState
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _submitBusiness,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.accentPink,
-                      foregroundColor: Colors.white,
+                      backgroundColor: context.tertiaryColor,
+                      foregroundColor: Theme.of(context).colorScheme.onTertiary,
                       minimumSize: const Size(double.infinity, 56),
                     ),
                     child: _isLoading

@@ -50,20 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDrPu8IdbugTdMag51IrEXsqdzogj0WMjs',
-    appId: '1:202939921028:android:5d5c36931284ba912688d1',
-    messagingSenderId: '202939921028',
-    projectId: 'party-ff736',
-    storageBucket: 'party-ff736.firebasestorage.app',
+    apiKey: 'AIzaSyBgpORnzV8dYC66P067NysLTdO6arFJCps',
+    appId: '1:385947009360:android:1bfaa68d66a9b04192ac55',
+    messagingSenderId: '385947009360',
+    projectId: 'ifest-3ccfe',
+    storageBucket: 'ifest-3ccfe.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyClNr4DJMrHEAV4NZuUOTjjD2BZIPDx6aY',
-    appId: '1:202939921028:ios:f2ddc7ffe9ef6ba32688d1',
-    messagingSenderId: '202939921028',
-    projectId: 'party-ff736',
-    storageBucket: 'party-ff736.firebasestorage.app',
-    iosClientId: '202939921028-6rv13rc05op5en5bvhmdakpn0g2vpnu3.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDDz4BbRP9cEJjlcjzUtdG2n5NON9dpzXg',
+    appId: '1:385947009360:ios:bcac3a220782188392ac55',
+    messagingSenderId: '385947009360',
+    projectId: 'ifest-3ccfe',
+    storageBucket: 'ifest-3ccfe.firebasestorage.app',
+    androidClientId: '385947009360-i5shrqap961urcsm6qar4k9bk9gfcv9r.apps.googleusercontent.com',
+    iosClientId: '385947009360-9l85qlqmf06iahl7sida2crqgvqp5jj6.apps.googleusercontent.com',
     iosBundleId: 'com.insterestelar.ifest',
   );
 

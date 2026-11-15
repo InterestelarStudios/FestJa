@@ -1,40 +1,40 @@
 {
   "project_info": {
-    "project_number": "202939921028",
-    "project_id": "party-ff736",
-    "storage_bucket": "party-ff736.firebasestorage.app"
+    "project_number": "385947009360",
+    "project_id": "ifest-3ccfe",
+    "storage_bucket": "ifest-3ccfe.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:202939921028:android:833cae3b1865bf912688d1",
+        "mobilesdk_app_id": "1:385947009360:android:282e576c6cd14bab92ac55",
         "android_client_info": {
-          "package_name": "com.example.party_business"
+          "package_name": "com.insterestelar.festja_business"
         }
       },
       "oauth_client": [
         {
-          "client_id": "202939921028-u54h6att59s1mtumvt8ds0l3s6ptnr1e.apps.googleusercontent.com",
+          "client_id": "385947009360-r2ie89lk7cjftfh82octgc2jh147bs9t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDrPu8IdbugTdMag51IrEXsqdzogj0WMjs"
+          "current_key": "AIzaSyBgpORnzV8dYC66P067NysLTdO6arFJCps"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "202939921028-u54h6att59s1mtumvt8ds0l3s6ptnr1e.apps.googleusercontent.com",
+              "client_id": "385947009360-r2ie89lk7cjftfh82octgc2jh147bs9t.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "202939921028-0jrrntdqs9n3kcbptt31a4mar62uaqcs.apps.googleusercontent.com",
+              "client_id": "385947009360-9l85qlqmf06iahl7sida2crqgvqp5jj6.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.ifestApp"
+                "bundle_id": "com.insterestelar.ifest"
               }
             }
           ]
@@ -43,150 +43,34 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:202939921028:android:2ed76be80240c2222688d1",
-        "android_client_info": {
-          "package_name": "com.example.party_client"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "202939921028-u54h6att59s1mtumvt8ds0l3s6ptnr1e.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDrPu8IdbugTdMag51IrEXsqdzogj0WMjs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "202939921028-u54h6att59s1mtumvt8ds0l3s6ptnr1e.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "202939921028-0jrrntdqs9n3kcbptt31a4mar62uaqcs.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.ifestApp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:202939921028:android:5d5c36931284ba912688d1",
+        "mobilesdk_app_id": "1:385947009360:android:1bfaa68d66a9b04192ac55",
         "android_client_info": {
           "package_name": "com.insterestelar.ifest"
         }
       },
       "oauth_client": [
         {
-          "client_id": "202939921028-e8s3dj0431b3p5mapjfm2rv783v7fu8h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.insterestelar.ifest",
-            "certificate_hash": "9dbeceac9e65f8bdac344b19d818d8b894ccc58e"
-          }
-        },
-        {
-          "client_id": "202939921028-u54h6att59s1mtumvt8ds0l3s6ptnr1e.apps.googleusercontent.com",
+          "client_id": "385947009360-r2ie89lk7cjftfh82octgc2jh147bs9t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDrPu8IdbugTdMag51IrEXsqdzogj0WMjs"
+          "current_key": "AIzaSyBgpORnzV8dYC66P067NysLTdO6arFJCps"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "202939921028-u54h6att59s1mtumvt8ds0l3s6ptnr1e.apps.googleusercontent.com",
+              "client_id": "385947009360-r2ie89lk7cjftfh82octgc2jh147bs9t.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "202939921028-0jrrntdqs9n3kcbptt31a4mar62uaqcs.apps.googleusercontent.com",
+              "client_id": "385947009360-9l85qlqmf06iahl7sida2crqgvqp5jj6.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.ifestApp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:202939921028:android:365f2eb5e81f04222688d1",
-        "android_client_info": {
-          "package_name": "com.insterestelar.ifestBusiness"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "202939921028-u54h6att59s1mtumvt8ds0l3s6ptnr1e.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDrPu8IdbugTdMag51IrEXsqdzogj0WMjs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "202939921028-u54h6att59s1mtumvt8ds0l3s6ptnr1e.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "202939921028-0jrrntdqs9n3kcbptt31a4mar62uaqcs.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.ifestApp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:202939921028:android:bcdf16d0988598b52688d1",
-        "android_client_info": {
-          "package_name": "com.interestelar.partypro"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "202939921028-u54h6att59s1mtumvt8ds0l3s6ptnr1e.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDrPu8IdbugTdMag51IrEXsqdzogj0WMjs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "202939921028-u54h6att59s1mtumvt8ds0l3s6ptnr1e.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "202939921028-0jrrntdqs9n3kcbptt31a4mar62uaqcs.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.ifestApp"
+                "bundle_id": "com.insterestelar.ifest"
               }
             }
           ]

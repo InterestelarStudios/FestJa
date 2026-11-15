@@ -15,20 +15,23 @@ class FavoritesScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: AppTheme.backgroundLight,
+        backgroundColor: context.backgroundColor,
         appBar: AppBar(
-          backgroundColor: AppTheme.primaryDark,
-          title: const Text(
+          backgroundColor: context.primaryColor,
+          title: Text(
             'Favoritos',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           centerTitle: true,
-          iconTheme: const IconThemeData(color: Colors.white),
-          bottom: const TabBar(
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white70,
+          iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+          bottom: TabBar(
+            labelColor: Theme.of(context).colorScheme.onPrimary,
+            unselectedLabelColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7),
             indicatorColor: AppTheme.accentGreen,
-            tabs: [
+            tabs: const [
               Tab(text: 'Produtos'),
               Tab(text: 'Empresas'),
             ],
@@ -55,10 +58,10 @@ class FavoritesScreen extends StatelessWidget {
         final favIds = snapshot.data ?? [];
 
         if (favIds.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
               'Você não tem produtos favoritos.',
-              style: TextStyle(color: AppTheme.textSecondary),
+              style: TextStyle(color: context.textSecondary),
             ),
           );
         }
@@ -102,7 +105,10 @@ class FavoritesScreen extends StatelessWidget {
       for (var doc in querySnapshot.docs) {
         final data = doc.data();
         if (!data.containsKey('id')) data['id'] = doc.id;
-        results.add(ServiceAds.fromMap(data));
+        final ad = ServiceAds.fromMap(data);
+        if (ad.isAvailable) {
+          results.add(ad);
+        }
       }
     }
     return results;
@@ -121,7 +127,7 @@ class FavoritesScreen extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.cardLight,
+          color: context.surfaceColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -169,9 +175,9 @@ class FavoritesScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'R\$ ${ad.price.toStringAsFixed(2).replaceAll('.', ',')}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.primaryDark,
+                      color: context.primaryColor,
                       fontSize: 16,
                     ),
                   ),
@@ -195,10 +201,10 @@ class FavoritesScreen extends StatelessWidget {
         final favIds = snapshot.data ?? [];
 
         if (favIds.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
               'Você não tem empresas favoritas.',
-              style: TextStyle(color: AppTheme.textSecondary),
+              style: TextStyle(color: context.textSecondary),
             ),
           );
         }
@@ -257,7 +263,7 @@ class FavoritesScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppTheme.cardLight,
+          color: context.surfaceColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -297,12 +303,12 @@ class FavoritesScreen extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.location_on_rounded, size: 14, color: AppTheme.textSecondary),
+                      Icon(Icons.location_on_rounded, size: 14, color: context.textSecondary),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
                           business.region,
-                          style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+                          style: TextStyle(color: context.textSecondary, fontSize: 13),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -312,7 +318,7 @@ class FavoritesScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, color: AppTheme.primaryDark),
+            Icon(Icons.chevron_right_rounded, color: context.primaryColor),
           ],
         ),
       ),

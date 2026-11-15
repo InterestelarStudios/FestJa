@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ifest_app/services/auth_service.dart';
-import 'package:ifest_app/theme/app_theme.dart';
+
 
 class OtpVerificationScreen extends StatefulWidget {
   final String verificationId;
@@ -57,7 +57,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Verificação'),
-        backgroundColor: AppTheme.backgroundLight,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),

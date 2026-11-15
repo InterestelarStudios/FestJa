@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ifest_app/services/auth_service.dart';
 import 'package:ifest_app/screens/auth/otp_verification_screen.dart';
-import 'package:ifest_app/theme/app_theme.dart';
+
 
 class PhoneAuthScreen extends StatefulWidget {
   const PhoneAuthScreen({super.key});
@@ -57,7 +57,6 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Entrar com Telefone'),
-        backgroundColor: AppTheme.backgroundLight,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),

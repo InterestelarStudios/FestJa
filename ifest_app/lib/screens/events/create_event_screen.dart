@@ -7,8 +7,7 @@ import 'package:ifest_app/models/event.dart';
 import 'package:ifest_app/models/user.dart';
 import 'package:ifest_app/services/event_service.dart';
 import 'package:ifest_app/theme/app_theme.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:ifest_app/screens/marketplace/map_selection_screen.dart';
 
 class CreateEventScreen extends StatefulWidget {
   final Event? eventToEdit;
@@ -62,7 +61,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+      maxWidth: 1200,
+      maxHeight: 1200,
+    );
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
@@ -71,6 +75,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   Future<void> _pickDate() async {
+    FocusScope.of(context).unfocus();
     final date = await showDatePicker(
       context: context,
       initialDate: DateTime.now().add(const Duration(days: 1)),
@@ -82,9 +87,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         _selectedDate = date;
       });
     }
+    Future.delayed(Duration.zero, () {
+      if (mounted) {
+        FocusScope.of(context).unfocus();
+      }
+    });
   }
 
   Future<void> _pickTime() async {
+    FocusScope.of(context).unfocus();
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -94,41 +105,37 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         _selectedTime = time;
       });
     }
+    Future.delayed(Duration.zero, () {
+      if (mounted) {
+        FocusScope.of(context).unfocus();
+      }
+    });
   }
 
-  Future<void> _getLocation() async {
-    try {
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
-      if (permission == LocationPermission.deniedForever || permission == LocationPermission.denied) {
-        if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Permissão de localização negada.')));
-        return;
-      }
-      
-      Position position = await Geolocator.getCurrentPosition();
+  Future<void> _openMapSelection() async {
+    FocusScope.of(context).unfocus();
+    final result = await Navigator.push<MapSelectionResult>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MapSelectionScreen(
+          initialLocation: _geoPoint,
+        ),
+      ),
+    );
+
+    if (result != null) {
       setState(() {
-        _geoPoint = GeoPoint(position.latitude, position.longitude);
+        _geoPoint = result.geoPoint;
+        _region = result.region;
+        _addressController.text = result.address;
       });
-      
-      List<Placemark> placemarks = await Geocoding().placemarkFromCoordinates(position.latitude, position.longitude);
-      if (placemarks.isNotEmpty) {
-        final place = placemarks.first;
-        final city = place.subAdministrativeArea ?? place.locality ?? place.administrativeArea ?? '';
-        final state = place.administrativeArea ?? '';
-        
-        String regionStr = '$city - $state'.trim();
-        if (regionStr.startsWith('-')) regionStr = regionStr.substring(1).trim();
-        
-        setState(() {
-          _region = regionStr;
-          _addressController.text = '${place.street}, ${place.subLocality}, $regionStr';
-        });
-      }
-    } catch (e) {
-      debugPrint('Error getting location: $e');
     }
+
+    Future.delayed(Duration.zero, () {
+      if (mounted) {
+        FocusScope.of(context).unfocus();
+      }
+    });
   }
 
   Future<void> _saveEvent() async {
@@ -213,7 +220,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
+      backgroundColor: context.backgroundColor,
       appBar: AppBar(
         title: Text(widget.eventToEdit != null ? 'Editar Evento' : 'Criar Evento'),
       ),
@@ -233,20 +240,20 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         height: 180,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
+                          color: const Color(0xFF1A1F26),
                           borderRadius: BorderRadius.circular(16),
                           image: _imageFile != null
                               ? DecorationImage(image: FileImage(_imageFile!), fit: BoxFit.cover)
                               : null,
-                          border: Border.all(color: Colors.grey.shade300),
+                          border: Border.all(color: const Color(0xFF282F3B)),
                         ),
                         child: _imageFile == null && widget.eventToEdit?.image == null
-                            ? Column(
+                            ? const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.add_a_photo_rounded, size: 40, color: Colors.grey.shade400),
-                                  const SizedBox(height: 8),
-                                  Text('Adicionar Capa', style: TextStyle(color: Colors.grey.shade600)),
+                                  Icon(Icons.add_a_photo_rounded, size: 40, color: Colors.white54),
+                                  SizedBox(height: 8),
+                                  Text('Adicionar Capa', style: TextStyle(color: Colors.white70, fontWeight: FontWeight.w500)),
                                 ],
                               )
                             : (_imageFile == null && widget.eventToEdit?.image != null)
@@ -338,10 +345,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         prefixIcon: Icon(Icons.people_rounded),
                         contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       ),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Outfit',
                         fontSize: 14,
-                        color: AppTheme.textPrimary,
+                        color: context.textPrimary,
                       ),
                       isExpanded: true,
                       items: _peopleRanges.map((range) {
@@ -360,32 +367,16 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     const SizedBox(height: 16),
 
                     // Address
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _addressController,
-                            enabled: !_noLocationDefined,
-                            textCapitalization: TextCapitalization.words,
-                            maxLength: 150,
-                            decoration: const InputDecoration(
-                              labelText: 'Endereço (opcional)',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.location_on_rounded),
-                              counterText: "",
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        IconButton(
-                          onPressed: _noLocationDefined ? null : _getLocation,
-                          icon: Icon(
-                            Icons.my_location_rounded,
-                            color: _noLocationDefined ? Colors.grey : AppTheme.primaryDark,
-                          ),
-                          tooltip: 'Pegar Localização Atual',
-                        ),
-                      ],
+                    TextFormField(
+                      controller: _addressController,
+                      readOnly: true,
+                      enabled: !_noLocationDefined,
+                      onTap: _noLocationDefined ? null : _openMapSelection,
+                      decoration: const InputDecoration(
+                        labelText: 'Endereço (opcional)',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.location_on_rounded),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -395,7 +386,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           width: 24,
                           child: Checkbox(
                             value: _noLocationDefined,
-                            activeColor: AppTheme.primaryDark,
+                            activeColor: context.primaryColor,
                             onChanged: (value) {
                               setState(() {
                                 _noLocationDefined = value ?? false;
@@ -409,9 +400,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const Text(
+                        Text(
                           'Ainda não defini o local',
-                          style: TextStyle(fontSize: 14, color: AppTheme.textPrimary),
+                          style: TextStyle(fontSize: 14, color: context.textPrimary),
                         ),
                       ],
                     ),
@@ -436,8 +427,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               }
                             });
                           },
-                          selectedColor: AppTheme.primaryDark.withValues(alpha: 0.2),
-                          checkmarkColor: AppTheme.primaryDark,
+                          selectedColor: context.primaryColor.withValues(alpha: 0.2),
+                          checkmarkColor: context.primaryColor,
                         );
                       }).toList(),
                     ),
@@ -458,8 +449,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   child: ElevatedButton(
                     onPressed: _saveEvent,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.primaryDark,
-                      foregroundColor: Colors.white,
+                      backgroundColor: context.primaryColor,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                     child: const Text('Salvar Evento', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

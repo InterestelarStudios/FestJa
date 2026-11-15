@@ -12,8 +12,18 @@ class MyEventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
-      appBar: AppBar(title: const Text('Meus Eventos')),
+      backgroundColor: context.backgroundColor,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+        leading: const SizedBox(width: 60),
+        centerTitle: true,
+        title: const Text(
+          'Meus Eventos',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        actions: const [SizedBox(width: 60)],
+      ),
       body: StreamBuilder<List<Event>>(
         stream: EventService().getUserEvents(),
         builder: (context, snapshot) {
@@ -54,11 +64,11 @@ class MyEventsScreen extends StatelessWidget {
           );
         },
         heroTag: "createEvent",
-        backgroundColor: AppTheme.primaryDark,
-        icon: const Icon(Icons.add_rounded, color: Colors.white),
-        label: const Text(
+        backgroundColor: context.primaryColor,
+        icon: Icon(Icons.add_rounded, color: Theme.of(context).colorScheme.onPrimary),
+        label: Text(
           'Criar Evento',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -71,12 +81,12 @@ class MyEventsScreen extends StatelessWidget {
         children: [
           Icon(Iconsax.calendar_add, size: 80, color: Colors.grey.shade300),
           const SizedBox(height: 16),
-          const Text(
+          Text(
             'Nenhum evento planejado',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: AppTheme.textSecondary,
+              color: context.textSecondary,
             ),
           ),
           const SizedBox(height: 8),
@@ -101,7 +111,7 @@ class MyEventsScreen extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.cardLight,
+        color: context.surfaceColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -131,14 +141,14 @@ class MyEventsScreen extends StatelessWidget {
           else
             Container(
               height: 80,
-              decoration: const BoxDecoration(
-                color: AppTheme.primaryDark,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              decoration: BoxDecoration(
+                color: context.primaryColor.withValues(alpha: 0.1),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
               ),
-              child: const Center(
+              child: Center(
                 child: Icon(
                   Iconsax.calendar_1,
-                  color: Colors.white54,
+                  color: context.primaryColor,
                   size: 40,
                 ),
               ),
@@ -155,10 +165,10 @@ class MyEventsScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         event.title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryDark,
+                          color: context.primaryColor,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -188,17 +198,17 @@ class MyEventsScreen extends StatelessWidget {
                 if (event.address != null && event.address!.isNotEmpty) ...[
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.location_on_rounded,
                         size: 14,
-                        color: AppTheme.textSecondary,
+                        color: context.textSecondary,
                       ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
                           event.address!,
-                          style: const TextStyle(
-                            color: AppTheme.textSecondary,
+                          style: TextStyle(
+                            color: context.textSecondary,
                             fontSize: 13,
                           ),
                           maxLines: 1,
@@ -211,16 +221,16 @@ class MyEventsScreen extends StatelessWidget {
                 ],
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.people_alt_rounded,
                       size: 14,
-                      color: AppTheme.textSecondary,
+                      color: context.textSecondary,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       '${event.people} convidados',
-                      style: const TextStyle(
-                        color: AppTheme.textSecondary,
+                      style: TextStyle(
+                        color: context.textSecondary,
                         fontSize: 13,
                       ),
                     ),
@@ -247,7 +257,8 @@ class MyEventsScreen extends StatelessWidget {
                         ),
                         label: const Text('Ver Detalhes'),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: AppTheme.primaryDark,
+                          foregroundColor: context.primaryColor,
+                          side: BorderSide(color: context.primaryColor, width: 1.5),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),

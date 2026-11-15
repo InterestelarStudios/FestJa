@@ -38,7 +38,7 @@ class TicketsScreen extends StatelessWidget {
               child: ClipPath(
                 clipper: TicketClipper(),
                 child: Container(
-                  color: AppTheme.cardLight,
+                  color: context.surfaceColor,
                   child: Column(
                     children: [
                       // Top Half: Event Image & Title
@@ -69,36 +69,36 @@ class TicketsScreen extends StatelessWidget {
                             Text(
                               'Use this ticket and scan it at the entrance gate.',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppTheme.textSecondary,
+                                    color: context.textSecondary,
                                   ),
                             ),
                             
                             const SizedBox(height: 24),
-                            const Divider(height: 1, color: Colors.black12),
+                            Divider(height: 1, color: Theme.of(context).dividerColor),
                             const SizedBox(height: 20),
                             
                             // Ticket Meta Information
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _buildMetaItem('ORDER ID', '#81329'),
-                                _buildMetaItem('PRICE', '\$20', isPaid: true),
+                                _buildMetaItem(context, 'ORDER ID', '#81329'),
+                                _buildMetaItem(context, 'PRICE', '\$20', isPaid: true),
                               ],
                             ),
                             const SizedBox(height: 16),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _buildMetaItem('DATE', 'June 20, 2026'),
-                                _buildMetaItem('TIME', '20:00 PM'),
+                                _buildMetaItem(context, 'DATE', 'June 20, 2026'),
+                                _buildMetaItem(context, 'TIME', '20:00 PM'),
                               ],
                             ),
                             const SizedBox(height: 16),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _buildMetaItem('VENUE', ticketEvent.location),
-                                _buildMetaItem('SEAT', '48 D'),
+                                _buildMetaItem(context, 'VENUE', ticketEvent.location),
+                                _buildMetaItem(context, 'SEAT', '48 D'),
                               ],
                             ),
                             
@@ -144,15 +144,15 @@ class TicketsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMetaItem(String label, String value, {bool isPaid = false}) {
+  Widget _buildMetaItem(BuildContext context, String label, String value, {bool isPaid = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 11,
-            color: AppTheme.textMuted,
+            color: context.textMuted,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
           ),
@@ -163,10 +163,10 @@ class TicketsScreen extends StatelessWidget {
             children: [
               Text(
                 value,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.textPrimary,
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(width: 8),
@@ -190,10 +190,10 @@ class TicketsScreen extends StatelessWidget {
         else
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
-              color: AppTheme.textPrimary,
+              color: context.textPrimary,
             ),
           ),
       ],

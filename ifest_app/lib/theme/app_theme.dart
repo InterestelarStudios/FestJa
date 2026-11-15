@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// A premium, modern theme configuration for the iFest application.
+/// A premium, modern theme configuration for the Fest'Ja application.
 /// 
 /// This theme uses the 'Outfit' Google Font to capture the geometric,
 /// premium aesthetic from the design reference, featuring sleek dark navy primary
@@ -14,7 +15,7 @@ class AppTheme {
   static const Color secondaryPurple = Color(0xFF7209B7); // Vibrant purple for active icons, highlights
   static const Color accentPink = Color(0xFFF72585); // Vibrant pink/magenta for special accents (like favorites)
   static const Color accentGreen = Color(0xFF10B981); // Neon green for badges (e.g., "PAID" badge)
-  static const Color backgroundLight = Color(0xFFFFFFFF); // Pure white scaffold background
+  static const Color backgroundLight = Color(0xFFF8FAFC); // Clean off-white scaffold background for contrast
   static const Color cardLight = Colors.white; // Pure white for cards, bottom sheets
   
   // Text Colors
@@ -51,6 +52,11 @@ class AppTheme {
       brightness: Brightness.light,
       primaryColor: primaryDark,
       scaffoldBackgroundColor: backgroundLight,
+      dividerColor: Colors.black.withValues(alpha: 0.23),
+      dividerTheme: DividerThemeData(
+        color: Colors.black.withValues(alpha: 0.23),
+        thickness: 0.5,
+      ),
       
       colorScheme: const ColorScheme.light(
         primary: primaryDark,
@@ -82,6 +88,14 @@ class AppTheme {
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: primaryDark),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+          systemNavigationBarColor: Colors.white,
+          systemNavigationBarIconBrightness: Brightness.dark,
+          systemNavigationBarDividerColor: Colors.transparent,
+        ),
         titleTextStyle: TextStyle(
           color: primaryDark,
           fontFamily: 'Outfit',
@@ -90,13 +104,16 @@ class AppTheme {
         ),
       ),
 
-      // Card Theme with soft shadows matching the design
+      // Card Theme with soft shadows and demarcated borders
       cardTheme: CardThemeData(
         color: cardLight,
-        elevation: 4,
-        shadowColor: Colors.black.withValues(alpha: 0.03),
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: Colors.black.withValues(alpha: 0.08),
+            width: 1.2,
+          ),
         ),
         margin: EdgeInsets.zero,
       ),
@@ -107,7 +124,7 @@ class AppTheme {
           backgroundColor: primaryDark,
           foregroundColor: Colors.white,
           elevation: 0,
-          minimumSize: const Size.fromHeight(56), // Standard tall button height in design
+          minimumSize: const Size(64, 48),
           padding: const EdgeInsets.symmetric(horizontal: 24),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30), // Capsule style
@@ -125,7 +142,7 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: primaryDark,
           side: const BorderSide(color: primaryDark, width: 1.5),
-          minimumSize: const Size.fromHeight(56),
+          minimumSize: const Size(64, 48),
           padding: const EdgeInsets.symmetric(horizontal: 24),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30), // Capsule style
@@ -175,16 +192,24 @@ class AppTheme {
         suffixIconColor: textSecondary,
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30), // Fully rounded search field
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: primaryDark.withValues(alpha: 0.15)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: primaryDark.withValues(alpha: 0.15)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: secondaryPurple, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 1.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
         ),
       ),
 
@@ -220,6 +245,11 @@ class AppTheme {
       brightness: Brightness.dark,
       primaryColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xFF0F172A), // Slate 900
+      dividerColor: Colors.white24,
+      dividerTheme: const DividerThemeData(
+        color: Colors.white24,
+        thickness: 0.5,
+      ),
       
       colorScheme: const ColorScheme.dark(
         primary: Colors.white,
@@ -249,6 +279,14 @@ class AppTheme {
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.white),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+          systemNavigationBarColor: Color(0xFF0F172A),
+          systemNavigationBarIconBrightness: Brightness.light,
+          systemNavigationBarDividerColor: Colors.transparent,
+        ),
         titleTextStyle: TextStyle(
           color: Colors.white,
           fontFamily: 'Outfit',
@@ -259,10 +297,13 @@ class AppTheme {
 
       cardTheme: CardThemeData(
         color: const Color(0xFF1E293B),
-        elevation: 4,
-        shadowColor: Colors.black.withValues(alpha: 0.2),
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: Colors.white.withValues(alpha: 0.1),
+            width: 1.2,
+          ),
         ),
         margin: EdgeInsets.zero,
       ),
@@ -272,7 +313,7 @@ class AppTheme {
           backgroundColor: Colors.white,
           foregroundColor: const Color(0xFF0F172A),
           elevation: 0,
-          minimumSize: const Size.fromHeight(56),
+          minimumSize: const Size(64, 48),
           padding: const EdgeInsets.symmetric(horizontal: 24),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
@@ -290,7 +331,7 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: Colors.white,
           side: const BorderSide(color: Colors.white, width: 1.5),
-          minimumSize: const Size.fromHeight(56),
+          minimumSize: const Size(64, 48),
           padding: const EdgeInsets.symmetric(horizontal: 24),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
@@ -316,16 +357,24 @@ class AppTheme {
         suffixIconColor: Colors.white70,
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: Color(0xFF9D4EDD), width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 1.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
         ),
       ),
 
@@ -351,3 +400,21 @@ class AppTheme {
     );
   }
 }
+
+extension AppThemeContext on BuildContext {
+  ThemeData get theme => Theme.of(this);
+  ColorScheme get colorScheme => theme.colorScheme;
+  TextTheme get textTheme => theme.textTheme;
+
+  Color get primaryColor => colorScheme.primary;
+  Color get secondaryColor => colorScheme.secondary;
+  Color get tertiaryColor => colorScheme.tertiary; // accentPink
+  Color get surfaceColor => colorScheme.surface; // cardLight in light, dark surface in dark
+  Color get backgroundColor => theme.scaffoldBackgroundColor;
+
+  Color get textPrimary => textTheme.bodyLarge?.color ?? colorScheme.onSurface;
+  Color get textSecondary => textTheme.bodyMedium?.color ?? colorScheme.onSurfaceVariant;
+  Color get textMuted => textTheme.bodySmall?.color ?? theme.disabledColor;
+  bool get isDarkMode => theme.brightness == Brightness.dark;
+}
+

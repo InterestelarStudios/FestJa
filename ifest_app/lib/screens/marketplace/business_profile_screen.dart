@@ -29,7 +29,7 @@ class BusinessProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
+      backgroundColor: context.backgroundColor,
       body: FutureBuilder<Business?>(
         future: _fetchFullBusiness(),
         builder: (context, snapshot) {
@@ -41,7 +41,7 @@ class BusinessProfileScreen extends StatelessWidget {
 
           return CustomScrollView(
             slivers: [
-              _buildSliverAppBar(business),
+              _buildSliverAppBar(context, business),
               if (business != null)
                 SliverToBoxAdapter(
                   child: _buildBusinessInfo(context, business),
@@ -54,7 +54,6 @@ class BusinessProfileScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.primaryDark,
                     ),
                   ),
                 ),
@@ -82,14 +81,16 @@ class BusinessProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSliverAppBar(Business? fullBusiness) {
+  Widget _buildSliverAppBar(BuildContext context, Business? fullBusiness) {
     final logo = fullBusiness?.logo ?? businessDetails.logo;
     final hasLogo = logo.isNotEmpty;
 
     return SliverAppBar(
       expandedHeight: 250,
       pinned: true,
-      backgroundColor: AppTheme.primaryDark,
+      backgroundColor: Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).colorScheme.surface
+          : context.primaryColor,
       iconTheme: const IconThemeData(color: Colors.white),
       actions: [
         StreamBuilder<bool>(
@@ -134,9 +135,9 @@ class BusinessProfileScreen extends StatelessWidget {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: context.surfaceColor,
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 3),
+                      border: Border.all(color: context.surfaceColor, width: 3),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.2),
@@ -152,10 +153,10 @@ class BusinessProfileScreen extends StatelessWidget {
                           : null,
                     ),
                     child: !hasLogo
-                        ? const Icon(
+                        ? Icon(
                             Icons.storefront_rounded,
                             size: 40,
-                            color: AppTheme.primaryDark,
+                            color: context.primaryColor,
                           )
                         : null,
                   ),
@@ -218,7 +219,7 @@ class BusinessProfileScreen extends StatelessWidget {
 
   Widget _buildBusinessInfo(BuildContext context, Business business) {
     return Container(
-      color: AppTheme.backgroundLight,
+      color: context.backgroundColor,
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,13 +236,13 @@ class BusinessProfileScreen extends StatelessWidget {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: AppTheme.primaryDark.withValues(alpha: 0.1),
+                    color: context.primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     category,
-                    style: const TextStyle(
-                      color: AppTheme.primaryDark,
+                    style: TextStyle(
+                      color: context.primaryColor,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -259,12 +260,12 @@ class BusinessProfileScreen extends StatelessWidget {
               leading: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryDark.withValues(alpha: 0.1),
+                  color: context.primaryColor.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.map_rounded,
-                  color: AppTheme.primaryDark,
+                  color: context.primaryColor,
                 ),
               ),
               title: const Text(
@@ -305,20 +306,20 @@ class BusinessProfileScreen extends StatelessWidget {
           if (business.description != null &&
               business.description!.isNotEmpty) ...[
             const SizedBox(height: 24),
-            const Text(
+            Text(
               'Sobre a Empresa',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppTheme.primaryDark,
+                color: context.primaryColor,
               ),
             ),
             const SizedBox(height: 12),
             Text(
               business.description!,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
-                color: AppTheme.textSecondary,
+                color: context.textSecondary,
                 height: 1.5,
               ),
             ),
@@ -354,13 +355,13 @@ class BusinessProfileScreen extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const SliverToBoxAdapter(
+          return SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.all(32.0),
+              padding: const EdgeInsets.all(32.0),
               child: Center(
                 child: Text(
                   'Nenhum serviço anunciado ainda.',
-                  style: TextStyle(color: AppTheme.textSecondary),
+                  style: TextStyle(color: context.textSecondary),
                 ),
               ),
             ),
@@ -371,7 +372,21 @@ class BusinessProfileScreen extends StatelessWidget {
           final data = doc.data() as Map<String, dynamic>;
           if (!data.containsKey('id')) data['id'] = doc.id;
           return ServiceAds.fromMap(data);
-        }).toList();
+        }).where((ad) => ad.isAvailable).toList();
+
+        if (ads.isEmpty) {
+          return SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Center(
+                child: Text(
+                  'Nenhum serviço anunciado ainda.',
+                  style: TextStyle(color: context.textSecondary),
+                ),
+              ),
+            ),
+          );
+        }
 
         return SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -405,7 +420,7 @@ class BusinessProfileScreen extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.cardLight,
+          color: context.surfaceColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -461,9 +476,9 @@ class BusinessProfileScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'R\$ ${ad.price.toStringAsFixed(2).replaceAll('.', ',')}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.primaryDark,
+                      color: context.primaryColor,
                       fontSize: 16,
                     ),
                   ),

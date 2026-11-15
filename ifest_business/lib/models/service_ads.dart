@@ -1,8 +1,70 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ifest_business/models/business.dart';
+
+class VariantOption {
+  String name;
+  num priceAdjustment;
+  bool isAvailable;
+
+  VariantOption({
+    required this.name,
+    required this.priceAdjustment,
+    this.isAvailable = true,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'priceAdjustment': priceAdjustment,
+      'isAvailable': isAvailable,
+    };
+  }
+
+  factory VariantOption.fromMap(Map<String, dynamic> map) {
+    return VariantOption(
+      name: map['name'] as String,
+      priceAdjustment: map['priceAdjustment'] as num? ?? 0,
+      isAvailable: map['isAvailable'] as bool? ?? true,
+    );
+  }
+}
+
+class ProductVariant {
+  String name;
+  bool isMultiSelect;
+  bool isRequired;
+  List<VariantOption> options;
+
+  ProductVariant({
+    required this.name,
+    required this.isMultiSelect,
+    required this.isRequired,
+    required this.options,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'isMultiSelect': isMultiSelect,
+      'isRequired': isRequired,
+      'options': options.map((opt) => opt.toMap()).toList(),
+    };
+  }
+
+  factory ProductVariant.fromMap(Map<String, dynamic> map) {
+    return ProductVariant(
+      name: map['name'] as String,
+      isMultiSelect: map['isMultiSelect'] as bool? ?? false,
+      isRequired: map['isRequired'] as bool? ?? false,
+      options:
+          (map['options'] as List?)
+              ?.map((opt) => VariantOption.fromMap(opt as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+  }
+}
 
 class ServiceAds {
   String id;
@@ -15,6 +77,11 @@ class ServiceAds {
   Timestamp creted;
   String region;
   GeoPoint geoPoint;
+  List<ProductVariant> variants;
+  bool allowMultiple;
+  bool isAvailable;
+  String? address;
+  List<String> amenities;
 
   ServiceAds({
     required this.id,
@@ -27,6 +94,11 @@ class ServiceAds {
     required this.creted,
     required this.geoPoint,
     required this.region,
+    required this.variants,
+    required this.allowMultiple,
+    this.isAvailable = true,
+    this.address,
+    this.amenities = const [],
   });
 
   Map<String, dynamic> toMap() {
@@ -41,6 +113,11 @@ class ServiceAds {
       'creted': creted,
       'geoPoint': geoPoint,
       'region': region,
+      'variants': variants.map((v) => v.toMap()).toList(),
+      'allowMultiple': allowMultiple,
+      'isAvailable': isAvailable,
+      if (address != null && address!.isNotEmpty) 'address': address,
+      if (amenities.isNotEmpty) 'amenities': amenities,
     };
   }
 
@@ -58,6 +135,16 @@ class ServiceAds {
       creted: map['creted'] as Timestamp,
       geoPoint: map['geoPoint'] as GeoPoint,
       region: map['region'] as String,
+      variants:
+          (map['variants'] as List?)
+              ?.map((v) => ProductVariant.fromMap(v as Map<String, dynamic>))
+              .toList() ??
+          [],
+      allowMultiple: map['allowMultiple'] as bool? ?? false,
+      isAvailable: map['isAvailable'] as bool? ?? true,
+      address: map['address'] as String?,
+      amenities:
+          (map['amenities'] as List?)?.map((e) => e.toString()).toList() ?? [],
     );
   }
 
